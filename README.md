@@ -1,0 +1,2 @@
+<a href="https://www.freepik.com/free-vector/cute-cat-with-love-sign-hand-cartoon-illustration-animal-nature-concept-isolated-flat-cartoon-style_16424083.htm#page=2&position=14&from_view=author&uuid=7782458f-2e36-4267-8822-98251d3ac623">Image by catalyststuff</a> on Freepik
+<a href="https://www.freepik.com/free-vector/cute-owl-waving-hand-cartoon-vector-icon-illustration-animal-nature-icon-concept-isolated-premium_34010122.htm#page=2&position=41&from_view=author&uuid=7782458f-2e36-4267-8822-98251d3ac623">Image by catalyststuff</a> on Freepik
