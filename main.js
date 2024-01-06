@@ -1,11 +1,11 @@
 const path = 'cards.json';
 const button = document.getElementById('start');
 
-let click = 0;
-let clicked = [];
-let clickedCard = [];
-let bestKey = sessionStorage.getItem('bestKey');
-let lastKey = sessionStorage.getItem('lastKey');
+let selected = [];
+let numSelected = 0;
+let cardSelected = [];
+let score = 0;
+let tries = 0;
 
 async function getImages() {
     const response = await fetch(path);
@@ -17,6 +17,11 @@ async function getImages() {
 function makeCards(images) {
     let box = document.getElementById('card-box');
     box.innerHTML = '';
+    score = 0;
+    tries = 0;
+    cardSelected = [];
+    numSelected = 0;
+    selected = [];
 
     for (const image of images) {
         let card = document.createElement('div');
@@ -34,38 +39,62 @@ function makeCards(images) {
         front.innerHTML = '<i class="fa-solid fa-question"></i>';
         card.append(front, back);
 
-        card.onclick = (e) => {
-            console.log(e.target.parentNode.querySelector('img'))
+        card.onclick = () => {
+            if (card.classList.contains('remove') || card.classList.contains('rotate')) {
+                return;
+            }
+
+            const cardName = card.querySelector('img').alt;
+
             card.classList.toggle('rotate');
-            click++;
-            if (click < 2){
-                clicked.push(e.target.parentNode.querySelector('img').alt);
-                clickedCard.push(e.target.parentNode);
-            }
-            else {
-                if (clicked[0] === clicked[1]) {
-                    console.log('hi')
-                    clickedCard.forEach(elem => {
-                        elem.classList.add('remove');
-                        points++;
-                    })
+            numSelected++;
+            selected.push(cardName);
+            cardSelected.push(card);
+            if (numSelected === 1) {
+            } else if (numSelected === 2)
+            {
+                if (selected[0] === selected[1]) {
+                    console.log(selected);
+                    setTimeout(() => {
+                        cardSelected.forEach(elem => elem.classList.add('remove'));
+                        score++;
+                        tries++;
+                        selected = [];
+                        numSelected = 0;
+                        cardSelected = [];
+                        console.log(score);
+                        console.log(tries);
+                    }, 600);
                 } else {
-                    clickedCard.forEach(elem => {
-                        elem.classList.toggle('rotate');
-                    })
+                    setTimeout(() => {
+                        cardSelected.forEach(elem => elem.classList.toggle('rotate'));
+                        tries++;
+                        numSelected = 0;
+                        selected = [];
+                        cardSelected = [];
+                        console.log(score);
+                        console.log(tries);
+                    }, 600);
                 }
+            } else {
+                setTimeout(() => {
+                    cardSelected.forEach(elem => elem.classList.toggle('rotate'));
+                }, 600);
             }
-        };
+        }
+
         box.append(card);
     }
 }
 
+function shuffleCards(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
 window.onload = () => {
-    const screen = document.getElementById('screen');
-    const box = document.getElementById('card-box');
-
-    const lastTry = document.createElement('div');
-
 }
 
 button.onclick = async () => {
@@ -76,7 +105,6 @@ button.onclick = async () => {
     } catch (error) {
         console.error('Rejected:\n', error);
     }
-
+    shuffleCards(images);
     makeCards(images);
 }
-
