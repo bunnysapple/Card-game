@@ -203,6 +203,8 @@ function secondPage() {
     p1.innerHTML = `Time: <span id="mins">--</span>m : <span id="secs">--</span>s`;
     p2.innerHTML = `Flips: <span id="tries">--</span>`;
     p3.innerHTML = `Score: <span id="score">--</span>`;
+    home.innerHTML = `<i class="fa-solid fa-house"></i>`;
+    reset.innerHTML = `<i class="fa-solid fa-arrow-rotate-right"></i>`;
 
     screen.innerHTML = '';
 
