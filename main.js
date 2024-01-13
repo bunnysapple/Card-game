@@ -22,6 +22,8 @@ function count() {
     const secs = document.getElementById('secs');
     const attempts = document.getElementById('tries');
     const scoreP = document.getElementById('score');
+    const reset = document.getElementById('reset');
+    const home = document.getElementById('home');
 
     mins.innerHTML = 0;
     secs.innerHTML = 0;
@@ -53,6 +55,19 @@ function count() {
             clearInterval(timer);
         }
     }, 1000);
+
+    home.onclick = () => {
+        clearInterval(timer);
+        set = true;
+        homePage();
+        console.log('did I work?')
+    }
+
+    reset.onclick = () => {
+        clearInterval(timer);
+        set = true;
+        gamePage();
+    }
 }
 
 function cardMatch() {
@@ -74,13 +89,20 @@ function cardMatch() {
 
 function cardMismatch() {
     setTimeout(() => {
+        const attempts = document.getElementById('tries');
+        const scoreP = document.getElementById('score');
+
         cardSelected.forEach(elem => elem.classList.toggle('rotate'));
         tries++;
+
+        attempts.innerHTML = tries;
+        if (score === 0) {
+            scoreP.innerHTML = 0;
+        }
+
         numSelected = 0;
         selected = [];
         cardSelected = [];
-        console.log(score);
-        console.log(tries);
     }, 600);
 }
 
@@ -174,11 +196,11 @@ async function generateCards() {
         } catch (error) {
             console.error('Rejected:\n', error);
         }
-        //shuffleCards(images);
+        shuffleCards(images);
         makeCards(images);
 }
 
-function secondPage() {
+function gamePage() {
     const screen = document.getElementById('screen');
     const cardBox = document.getElementById('card-box');
 
@@ -207,6 +229,15 @@ function secondPage() {
     reset.innerHTML = `<i class="fa-solid fa-arrow-rotate-right"></i>`;
 
     screen.innerHTML = '';
+    cardBox.innerHTML = '';
+
+    home.onclick = () => {
+        homePage();
+    }
+
+    reset.onclick = () => {
+        gamePage();
+    }
 
     scores.append(p1, p2, p3);
     buttons.append(home, reset);
@@ -216,7 +247,7 @@ function secondPage() {
     generateCards();    
 }
 
-function firstPage() {
+function homePage() {
     const screen = document.getElementById('screen');
     const cardBox = document.getElementById('card-box');
     const header = document.createElement('header');
@@ -231,12 +262,15 @@ function firstPage() {
     h2Prompt.innerHTML = 'Start The Game?'
     start.innerHTML = 'Start!';
 
+    screen.innerHTML = '';
+    cardBox.innerHTML = '';
+
     header.append(h1);
     prompt.append(h2Prompt, start);
     screen.append(header, prompt);
 
     start.onclick = () => {
-        secondPage();
+        gamePage();
     }
     /*async () => {
         let images = [];
@@ -252,7 +286,7 @@ function firstPage() {
 }
 
 window.onload = () => {
-    firstPage();
+    homePage();
 }
 
 /* button.onclick = async () => {

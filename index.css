@@ -41,8 +41,8 @@ body {
 }
 
 #screen > #prompt {
-    margin: 1dvh;
-    font-size: 2dvh;
+    margin: 1dvw;
+    font-size: 2dvw;
 }
 
 #screen > #prompt * {
@@ -55,12 +55,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    background-color: red;
+    /*background-color: red;*/
 }
 
 #screen > #game-score > #scores {
     text-align: left;
-    background-color: brown;
+    /*background-color: brown;*/
     width: 40%;
     height: 80%;
     position: relative;
@@ -71,7 +71,7 @@ body {
 }
 
 #screen > #game-score > #buttons {
-    background-color: wheat;
+    /*background-color: wheat;*/
     width: 40%;
     height: 80%;
     display: flex;
@@ -80,9 +80,13 @@ body {
     justify-content: space-evenly;
 }
 
+#screen > #game-score > #scores > p {
+    font-size: 2dvw;
+}
+
 #game-score > #buttons > button {
-    width: 5dvh;
-    height: 5dvh;
+    width: 5dvw;
+    height: 5dvw;
 }
 
 #game-box > #card-box {
@@ -148,11 +152,11 @@ body {
         visibility: hidden;
     }
 }
-
+/*
 #screen {
     background-color: blue;
 }
 
 #card-box {
     background-color: transparent;
-}
+}*/
