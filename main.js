@@ -1,11 +1,18 @@
 const path = 'cards.json';
 
-let lastGame = [];
+let lastGame = {
+    time: '--',
+    score: '--',
+    flips: '--',
+    numOfQuits: 0
+};
+
 if (localStorage.getItem('game')) {
+    console.log(JSON.parse(localStorage.getItem('game')));
     lastGame = JSON.parse(localStorage.getItem('game'));
 }
+
 console.log(lastGame);
-let game = [];
 let selected = [];
 let cardSelected = [];
 let numSelected = 0;
@@ -31,6 +38,21 @@ function count() {
     scoreP.innerHTML = 0;
 
     timer = setInterval(() => {
+        const flippedCards = document.getElementById('card-box').querySelectorAll('.remove').length;
+        const numOfCards = document.getElementById('card-box').querySelectorAll('.card').length;
+
+
+        if (flippedCards === numOfCards) {
+            console.log(minutes + ' ' + seconds);
+            lastGame.time = `${minutes}:${seconds}`;
+            lastGame.score = score;
+            lastGame.flips = tries;
+            localStorage.setItem('game', JSON.stringify(lastGame));
+            minutes = 0;
+            seconds = 0;
+            clearInterval(timer);
+            return;
+        }
         seconds++;
 
         if (seconds === 60) {
@@ -42,21 +64,17 @@ function count() {
 
         mins.innerHTML = minutes;
         secs.innerHTML = seconds;
-
-        const flippedCards = document.getElementById('card-box')
-                            .querySelectorAll('.remove').length;
-        const numOfCards = document.getElementById('card-box')
-                            .querySelectorAll('.card').length;
-
-        if (flippedCards === numOfCards) {
-            console.log(minutes + ' ' + seconds);
-            minutes = 0;
-            seconds = 0;
-            clearInterval(timer);
-        }
     }, 1000);
+    
 
     home.onclick = () => {
+        const flippedCards = document.getElementById('card-box').querySelectorAll('.remove').length;
+        const numOfCards = document.getElementById('card-box').querySelectorAll('.card').length;
+        if (numOfCards !== flippedCards) {
+            lastGame.numOfQuits++;
+            console.log(lastGame)
+            localStorage.setItem('game', JSON.stringify(lastGame));
+        }
         clearInterval(timer);
         set = true;
         homePage();
@@ -64,6 +82,19 @@ function count() {
     }
 
     reset.onclick = () => {
+        const flippedCards = document.getElementById('card-box').querySelectorAll('.remove').length;
+        const numOfCards = document.getElementById('card-box').querySelectorAll('.card').length;
+        if (numOfCards !== flippedCards) {
+            lastGame.numOfQuits++;
+            console.log(lastGame.numOfQuits);
+            minutes = 0;
+            seconds = 0;
+            tries = 0;
+            score = 0;
+            console.log(lastGame);
+            localStorage.setItem('game', JSON.stringify(lastGame))
+            console.log(JSON.parse(localStorage.getItem('game')));
+        }
         clearInterval(timer);
         set = true;
         gamePage();
@@ -196,7 +227,7 @@ async function generateCards() {
         } catch (error) {
             console.error('Rejected:\n', error);
         }
-        shuffleCards(images);
+        //shuffleCards(images);
         makeCards(images);
 }
 
@@ -255,12 +286,29 @@ function homePage() {
     const h1 = document.createElement('h1');
     const h2Prompt = document.createElement('h2');
     const start = document.createElement('button');
+    const lastGameBox = document.createElement('div');
+    const scoreBox = document.createElement('div');
+    const h3 = document.createElement('h3');
+    const lastScores = document.createElement('div');
+    const lastTime = document.createElement('p');
+    const lastScore = document.createElement('p');
+    const lastFlips = document.createElement('p'); 
 
     prompt.id = 'prompt';
     start.id = 'start';
+    lastGameBox.id = 'last-game';
+    lastScores.id = 'lastScores';
+    lastTime.id = 'lastTime';
+    lastScore.id = 'lastScore';
+    lastFlips.id = 'lastFlips';
+    scoreBox.id = 'scoreBox';
     h1.innerHTML = 'Card Flip!';
     h2Prompt.innerHTML = 'Start The Game?'
     start.innerHTML = 'Start!';
+    h3.innerHTML = 'Last Game Scores:';
+    lastTime.innerHTML = 'Time: <span id="dataTime"></span>';
+    lastScore.innerHTML = 'Score: <span id="dataScore"></span>';
+    lastFlips.innerHTML = 'Flips: <span id="dataFlips"></span>';
 
     screen.innerHTML = '';
     cardBox.innerHTML = '';
@@ -268,6 +316,19 @@ function homePage() {
     header.append(h1);
     prompt.append(h2Prompt, start);
     screen.append(header, prompt);
+    scoreBox.append(h3, lastTime, lastScore, lastFlips);
+    lastGameBox.append(scoreBox);
+    cardBox.append(lastGameBox);
+
+    const dataTime = document.getElementById('dataTime');
+    const dataScore = document.getElementById('dataScore');
+    const dataFlips = document.getElementById('dataFlips');
+
+    console.log(lastGame['time'], lastGame['score'], lastGame['flips']);
+
+    dataTime.innerHTML = lastGame.time;
+    dataScore.innerHTML = lastGame.score;
+    dataFlips.innerHTML = lastGame.flips;
 
     start.onclick = () => {
         gamePage();
