@@ -4,7 +4,7 @@ let lastGame = {
     time: '--',
     score: '--',
     flips: '--',
-    numOfQuits: 0
+    numOfQuits: null
 };
 
 if (localStorage.getItem('game')) {
@@ -70,21 +70,25 @@ function count() {
     home.onclick = () => {
         const flippedCards = document.getElementById('card-box').querySelectorAll('.remove').length;
         const numOfCards = document.getElementById('card-box').querySelectorAll('.card').length;
-        if (numOfCards !== flippedCards) {
+        if (numOfCards > flippedCards) {
             lastGame.numOfQuits++;
-            console.log(lastGame)
+            minutes = 0;
+            seconds = 0;
+            tries = 0;
+            score = 0;
             localStorage.setItem('game', JSON.stringify(lastGame));
+            console.log(JSON.parse(localStorage.getItem('game')));
         }
         clearInterval(timer);
         set = true;
         homePage();
-        console.log('did I work?')
+        console.log(numOfCards, flippedCards)
     }
 
     reset.onclick = () => {
         const flippedCards = document.getElementById('card-box').querySelectorAll('.remove').length;
         const numOfCards = document.getElementById('card-box').querySelectorAll('.card').length;
-        if (numOfCards !== flippedCards) {
+        if (numOfCards > flippedCards) {
             lastGame.numOfQuits++;
             console.log(lastGame.numOfQuits);
             minutes = 0;
@@ -293,6 +297,7 @@ function homePage() {
     const lastTime = document.createElement('p');
     const lastScore = document.createElement('p');
     const lastFlips = document.createElement('p'); 
+    const quits = document.createElement('p');
 
     prompt.id = 'prompt';
     start.id = 'start';
@@ -309,15 +314,16 @@ function homePage() {
     lastTime.innerHTML = 'Time: <span id="dataTime"></span>';
     lastScore.innerHTML = 'Score: <span id="dataScore"></span>';
     lastFlips.innerHTML = 'Flips: <span id="dataFlips"></span>';
+    quits.innerHTML = `Quits: <span id="numOfQuits">${lastGame.numOfQuits === null ? "--" : lastGame.numOfQuits}</span>`
 
     screen.innerHTML = '';
     cardBox.innerHTML = '';
 
     header.append(h1);
     prompt.append(h2Prompt, start);
-    screen.append(header, prompt);
-    scoreBox.append(h3, lastTime, lastScore, lastFlips);
-    lastGameBox.append(scoreBox);
+    screen.append(header);
+    scoreBox.append(h3, lastTime, lastScore, lastFlips, quits);
+    lastGameBox.append(prompt, scoreBox);
     cardBox.append(lastGameBox);
 
     const dataTime = document.getElementById('dataTime');
