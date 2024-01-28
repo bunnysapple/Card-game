@@ -253,3 +253,12 @@ body {
         font-size: 120%;
     }
 }
+
+@media only screen and (min-width: 50svh) {
+    * {
+        font-size: 100%;
+    }
+    #game-score > #scores {
+        font-size: 90%;
+    }
+}
