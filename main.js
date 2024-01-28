@@ -231,7 +231,7 @@ async function generateCards() {
         } catch (error) {
             console.error('Rejected:\n', error);
         }
-        //shuffleCards(images);
+        shuffleCards(images);
         makeCards(images);
 }
 
@@ -339,31 +339,19 @@ function homePage() {
     start.onclick = () => {
         gamePage();
     }
-    /*async () => {
-        let images = [];
-
-        try {
-            images = await getImages();
-        } catch (error) {
-            console.error('Rejected:\n', error);
-        }
-        //shuffleCards(images);
-        makeCards(images);
-    }*/
 }
 
 window.onload = () => {
+    const lightOrDark = document.getElementById('light-or-dark')
+    const sun = document.getElementById('sun');
+    const moon = document.getElementById('moon');
+    const body = document.getElementsByTagName('body')[0];
+
     homePage();
-}
 
-/* button.onclick = async () => {
-    let images = [];
-
-    try {
-        images = await getImages();
-    } catch (error) {
-        console.error('Rejected:\n', error);
+    lightOrDark.onclick = () => {
+        sun.classList.toggle('hidden');
+        moon.classList.toggle('hidden');
+        body.classList.toggle('dark');
     }
-    shuffleCards(images);
-    makeCards(images);
-} */
+}
