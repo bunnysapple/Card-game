@@ -8,7 +8,6 @@ let lastGame = {
 };
 
 if (localStorage.getItem('game')) {
-    console.log(JSON.parse(localStorage.getItem('game')));
     lastGame = JSON.parse(localStorage.getItem('game'));
 }
 
@@ -43,7 +42,6 @@ function count() {
 
 
         if (flippedCards === numOfCards) {
-            console.log(minutes + ' ' + seconds);
             lastGame.time = `${minutes}:${seconds}`;
             lastGame.score = score;
             lastGame.flips = tries;
@@ -60,8 +58,6 @@ function count() {
             minutes++;
         }
 
-        console.log(minutes + ' ' + seconds);
-
         mins.innerHTML = minutes;
         secs.innerHTML = seconds;
     }, 1000);
@@ -77,7 +73,6 @@ function count() {
             tries = 0;
             score = 0;
             localStorage.setItem('game', JSON.stringify(lastGame));
-            console.log(JSON.parse(localStorage.getItem('game')));
         }
         clearInterval(timer);
         set = true;
@@ -90,14 +85,11 @@ function count() {
         const numOfCards = document.getElementById('card-box').querySelectorAll('.card').length;
         if (numOfCards > flippedCards) {
             lastGame.numOfQuits++;
-            console.log(lastGame.numOfQuits);
             minutes = 0;
             seconds = 0;
             tries = 0;
             score = 0;
-            console.log(lastGame);
             localStorage.setItem('game', JSON.stringify(lastGame))
-            console.log(JSON.parse(localStorage.getItem('game')));
         }
         clearInterval(timer);
         set = true;
